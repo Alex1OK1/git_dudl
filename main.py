@@ -8,7 +8,7 @@ pygame.init()
 pygame.display.set_caption('Doodle Jump')
 window_surface = pygame.display.set_mode((400, 600))
 screen = pygame.Surface((360, 600)).convert()
-background = pygame.transform.scale(pygame.image.load("bck.png"), (400, 600))
+background = pygame.transform.scale(pygame.image.load("imgs/bck.png"), (400, 600))
 screen.blit(background, (0, 0))
 play_button = Button(
     # Mandatory Parameters
@@ -17,8 +17,8 @@ play_button = Button(
     181,  # Y-coordinate of top left corner
     150,  # Width
     59,  # Height
-    image=pygame.image.load("btn.png"),
-    onClick=lambda: print(type(pygame.image.load("buon.png")))  # Function to call when clicked on
+    image=pygame.image.load("imgs/btn.png"),
+    onClick=lambda: print(type(pygame.image.load("imgs/buon.png")))  # Function to call when clicked on
 )
 toys = Button(
     # Mandatory Parameters
@@ -27,8 +27,8 @@ toys = Button(
     277,  # Y-coordinate of top left corner
     140,  # Width
     50,  # Height
-    image=pygame.image.load("toys.png"),
-    onClick=lambda: print(type(pygame.image.load("toys.png")))  # Function to call when clicked on
+    image=pygame.image.load("imgs/toys.png"),
+    onClick=lambda: print(type(pygame.image.load("imgs/toys.png")))  # Function to call when clicked on
 )
 
 
@@ -45,7 +45,7 @@ leave = Button(
     301,  # Y-coordinate of top left corner
     91,  # Width
     80,  # Height
-    image=pygame.image.load("exit.png"),
+    image=pygame.image.load("imgs/exit.png"),
     onClick=lambda: bb()  # Function to call when clicked on
 )
 while is_running:
