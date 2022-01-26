@@ -6,12 +6,12 @@ import random
 
 class DoodleJump:
     def __init__(self):
-        self.screen = pygame.display.set_mode((800, 600))
+        self.jumpsound = pygame.mixer.Sound('jump.wav')
+        self.springsound = pygame.mixer.Sound('spring.wav')
+        self.slomaloszvuk = pygame.mixer.Sound('break.wav')
         self.green = pygame.image.load("imgs/green.png")
-        pygame.font.init()
         self.score = 1
         self.g = 0
-        self.font = pygame.font.SysFont("Arial", 50)
         self.blue = pygame.image.load("imgs/blue.png")
         self.red = pygame.image.load("imgs/red.png")
         self.red_1 = pygame.image.load("imgs/red_1.png")
@@ -80,9 +80,13 @@ class DoodleJump:
             if rect.colliderect(player) and self.gravity and self.playery < (p[1] - self.cameray):
                 if p[2] != 2:
                     self.jump = 15
+                    self.jumpsound.play()
                     self.gravity = 0
                 else:
+                    if p[-1] != 1:
+                        self.slomaloszvuk.play()
                     p[-1] = 1
+
             if p[2] == 1:
                 if p[-1] == 1:
                     p[0] += 5
@@ -132,7 +136,7 @@ class DoodleJump:
                                 self.playerRight.get_height())):
                 self.jump = 50
                 self.cameray -= 50
-
+                self.springsound.play()
     def generatePlatforms(self):
         on = 600
         while on > -100:
@@ -153,20 +157,36 @@ class DoodleJump:
             pygame.draw.line(self.screen, (222, 222, 222), (0, x * 12), (800, x * 12))
 
     def run(self):
+        self.score = 1
+        self.g = 0
+        self.direction = 0
+        self.playerx = 400
+        self.playery = 400
+        self.platforms = [[400, 500, 0, 0]]
+        self.springs = []
+        self.cameray = 0
+        self.jump = 0
+        self.gravity = 0
+        self.xmovement = 0
+        pygame.display.set_caption('Doodle Jump')
+        self.screen = pygame.display.set_mode((800, 600))
+        self.background = pygame.transform.scale(pygame.image.load("imgs/field.jpg"), (800, 600))
+        pygame.font.init()
+        self.font = pygame.font.SysFont("Arial", 50)
         clock = pygame.time.Clock()
         self.generatePlatforms()
         running = True
         while running:
-            self.screen.fill((255, 255, 255))
-            clock.tick(70)
+            self.screen.blit(self.background, (0, 0))
+            clock.tick(65)
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == pygame.QUIT:
                     running = False
             if self.playery - self.cameray > 700:
                 self.cameray = 0
-                self.score = 0
+                self.score = -1*self.score
                 self.springs = []
-                self.platforms = [[400,400, 0, 0]]
+                self.platforms = [[400, 400, 0, 0]]
                 self.generatePlatforms()
                 self.playerx = 400
                 self.playery = 400
@@ -176,8 +196,8 @@ class DoodleJump:
             self.updatePlatforms()
             self.screen.blit(self.font.render(str(self.score - 1), -1, (0, 0, 0)), (25, 25))
             pygame.display.flip()
-            if self.score == 0:
+            if self.score <= 0:
                 running = False
-                
+        return -1*self.score - 1
 
-
+# DoodleJump().run()
